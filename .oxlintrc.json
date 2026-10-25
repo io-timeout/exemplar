@@ -1,0 +1,519 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  // Oxlint's correctness rules, and the rules below.
+  "categories": { "correctness": "error" },
+  "jsPlugins": ["eslint-plugin-sonarjs", "eslint-plugin-turbo"],
+  // Type-aware rules read upstream declarations, so lint runs after `^build`.
+  "options": { "typeAware": true },
+  "ignorePatterns": ["**/node_modules/", "**/dist/", "**/coverage/", "**/.turbo/"],
+  "rules": {
+    // eslint:recommended and typescript-eslint's recommended and recommended-type-checked, beyond correctness.
+    "no-array-constructor": "error",
+    "no-case-declarations": "error",
+    "no-empty": "error",
+    "no-fallthrough": "error",
+    "no-prototype-builtins": "error",
+    "no-regex-spaces": "error",
+    "no-unexpected-multiline": "error",
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_|ignore",
+        "varsIgnorePattern": "^_|ignore",
+        "caughtErrorsIgnorePattern": "^_|ignore",
+        "destructuredArrayIgnorePattern": "^_|ignore"
+      }
+    ],
+    "no-var": "error",
+    "prefer-const": "error",
+    "prefer-rest-params": "error",
+    "prefer-spread": "error",
+    "typescript/ban-ts-comment": "error",
+    "typescript/no-deprecated": "error",
+    "typescript/no-empty-object-type": "error",
+    "typescript/no-explicit-any": "error",
+    "typescript/no-misused-promises": "error",
+    "typescript/no-namespace": "error",
+    "typescript/no-require-imports": "error",
+    "typescript/no-unnecessary-type-assertion": "error",
+    "typescript/no-unnecessary-type-constraint": "error",
+    "typescript/no-unsafe-enum-comparison": "error",
+    "typescript/no-unsafe-function-type": "error",
+    "typescript/only-throw-error": "error",
+    "typescript/prefer-promise-reject-errors": "error",
+    "typescript/restrict-plus-operands": "error",
+    // Correctness rules turned off. A number or a null in a message reads fine; no-base-to-string still catches
+    // stringified objects.
+    "typescript/restrict-template-expressions": "off",
+    // Environment variables a build reads must be Turborepo inputs.
+    "turbo/no-undeclared-env-vars": "error",
+    // A library never writes to the console: it reports through the error handler.
+    "no-console": "error",
+    // Native rules in place of sonarjs's, listed at the end of the sonarjs rules.
+    "block-scoped-var": "error",
+    "default-case-last": "error",
+    "no-new": "error",
+    "no-warning-comments": ["error", { "terms": ["fixme"], "location": "anywhere" }],
+    // The other unicorn rules, except no-null (DOM Level 3 spells "absent" as null) and three that misfire: worker
+    // postMessage origins, the empty export a module needs, and CommonJS config files.
+    "unicorn/catch-error-name": "error",
+    "unicorn/consistent-assert": "error",
+    "unicorn/consistent-date-clone": "error",
+    "unicorn/consistent-empty-array-spread": "error",
+    "unicorn/consistent-existence-index-check": "error",
+    "unicorn/consistent-function-scoping": "error",
+    "unicorn/consistent-template-literal-escape": "error",
+    "unicorn/custom-error-definition": "error",
+    // Formatting, which Oxfmt decides.
+    "unicorn/empty-brace-spaces": "off",
+    "unicorn/error-message": "error",
+    "unicorn/escape-case": "error",
+    "unicorn/explicit-length-check": "error",
+    "unicorn/explicit-timer-delay": "error",
+    "unicorn/filename-case": ["error", { "case": "kebabCase" }],
+    "unicorn/import-style": "error",
+    "unicorn/max-nested-calls": "error",
+    "unicorn/new-for-builtins": "error",
+    "unicorn/no-abusive-eslint-disable": "error",
+    "unicorn/no-accessor-recursion": "error",
+    "unicorn/no-anonymous-default-export": "error",
+    "unicorn/no-array-callback-reference": "error",
+    "unicorn/no-array-fill-with-reference-type": "error",
+    "unicorn/no-array-for-each": "error",
+    "unicorn/no-array-method-this-argument": "error",
+    "unicorn/no-array-reduce": "error",
+    "unicorn/no-array-reverse": "error",
+    "unicorn/no-array-sort": "error",
+    "unicorn/no-await-expression-member": "error",
+    "unicorn/no-confusing-array-with": "error",
+    "unicorn/no-console-spaces": "error",
+    "unicorn/no-document-cookie": "error",
+    "unicorn/no-hex-escape": "error",
+    "unicorn/no-immediate-mutation": "error",
+    "unicorn/no-instanceof-array": "error",
+    "unicorn/no-instanceof-builtins": "error",
+    "unicorn/no-length-as-slice-end": "error",
+    "unicorn/no-lonely-if": "error",
+    "unicorn/no-magic-array-flat-depth": "error",
+    "unicorn/no-negated-condition": "error",
+    "unicorn/no-negation-in-equality-check": "error",
+    // Oxfmt strips the parentheses it asks for; sonarjs/no-nested-conditional covers nesting instead.
+    "unicorn/no-nested-ternary": "off",
+    "unicorn/no-new-buffer": "error",
+    "unicorn/no-object-as-default-parameter": "error",
+    "unicorn/no-process-exit": "error",
+    "unicorn/no-static-only-class": "error",
+    "unicorn/no-this-assignment": "error",
+    "unicorn/no-typeof-undefined": "error",
+    "unicorn/no-unnecessary-array-flat-depth": "error",
+    "unicorn/no-unnecessary-array-splice-count": "error",
+    "unicorn/no-unnecessary-slice-end": "error",
+    "unicorn/no-unreadable-array-destructuring": "error",
+    "unicorn/no-unreadable-iife": "error",
+    "unicorn/no-useless-collection-argument": "error",
+    "unicorn/no-useless-error-capture-stack-trace": "error",
+    "unicorn/no-useless-promise-resolve-reject": "error",
+    "unicorn/no-useless-switch-case": "error",
+    // TypeScript often needs an explicit undefined, as in Promise.resolve(undefined) or a typed () => undefined.
+    "unicorn/no-useless-undefined": ["error", { "checkArguments": false, "checkArrowFunctionBody": false }],
+    "unicorn/no-zero-fractions": "error",
+    // Formatting, which Oxfmt decides.
+    "unicorn/number-literal-case": "off",
+    "unicorn/numeric-separators-style": "error",
+    "unicorn/prefer-add-event-listener": "error",
+    "unicorn/prefer-array-find": "error",
+    "unicorn/prefer-array-flat": "error",
+    "unicorn/prefer-array-flat-map": "error",
+    "unicorn/prefer-array-index-of": "error",
+    "unicorn/prefer-array-some": "error",
+    "unicorn/prefer-at": "error",
+    "unicorn/prefer-bigint-literals": "error",
+    "unicorn/prefer-blob-reading-methods": "error",
+    "unicorn/prefer-class-fields": "error",
+    "unicorn/prefer-classlist-toggle": "error",
+    // The parser works in UTF-16 code units on purpose: codePointAt changes what an index means, and past the end
+    // gives undefined where the end checks expect NaN. Each call says why in an eslint-disable-next-line comment.
+    "unicorn/prefer-code-point": "off",
+    "unicorn/prefer-date-now": "error",
+    "unicorn/prefer-default-parameters": "error",
+    // exemplar implements DOM Level 3 Core, whose methods these rules would swap for WHATWG-only ones.
+    "unicorn/prefer-dom-node-append": "off",
+    "unicorn/prefer-dom-node-dataset": "off",
+    "unicorn/prefer-query-selector": "off",
+    // The tree has WHATWG's remove() beside removeChild.
+    "unicorn/prefer-dom-node-remove": "error",
+    "unicorn/prefer-dom-node-text-content": "error",
+    // Node code, and fakes of Node objects, use EventEmitter by design.
+    "unicorn/prefer-event-target": "off",
+    "unicorn/prefer-export-from": "error",
+    "unicorn/prefer-global-this": "error",
+    "unicorn/prefer-import-meta-properties": "error",
+    "unicorn/prefer-includes": "error",
+    "unicorn/prefer-keyboard-event-key": "error",
+    "unicorn/prefer-logical-operator-over-ternary": "error",
+    "unicorn/prefer-math-min-max": "error",
+    // Its fix turns `x | 0`, which wraps to 32 bits, into Math.trunc, which does not.
+    "unicorn/prefer-math-trunc": "off",
+    // Its fix swaps insertBefore and replaceChild, which DOM Level 3 Core defines, for WHATWG methods.
+    "unicorn/prefer-modern-dom-apis": "off",
+    "unicorn/prefer-modern-math-apis": "error",
+    "unicorn/prefer-native-coercion-functions": "error",
+    "unicorn/prefer-negative-index": "error",
+    "unicorn/prefer-node-protocol": "error",
+    // Its fix swaps parseInt and parseFloat for Number(), which parses differently ('' is 0, '12px' is NaN).
+    "unicorn/prefer-number-coercion": "off",
+    "unicorn/prefer-number-properties": "error",
+    "unicorn/prefer-object-from-entries": "error",
+    "unicorn/prefer-optional-catch-binding": "error",
+    "unicorn/prefer-prototype-methods": "error",
+    "unicorn/prefer-reflect-apply": "error",
+    "unicorn/prefer-regexp-test": "error",
+    "unicorn/prefer-response-static-json": "error",
+    "unicorn/prefer-set-has": "error",
+    "unicorn/prefer-single-call": "error",
+    // Its fix turns a typed array's slice() into a plain array.
+    "unicorn/prefer-spread": "off",
+    "unicorn/prefer-string-raw": "error",
+    "unicorn/prefer-string-replace-all": "error",
+    "unicorn/prefer-string-slice": "error",
+    "unicorn/prefer-string-trim-start-end": "error",
+    "unicorn/prefer-structured-clone": "error",
+    "unicorn/prefer-ternary": "error",
+    "unicorn/prefer-top-level-await": "error",
+    "unicorn/prefer-type-error": "error",
+    "unicorn/relative-url-style": "error",
+    "unicorn/require-array-join-separator": "error",
+    "unicorn/require-module-attributes": "error",
+    "unicorn/require-number-to-fixed-digits-argument": "error",
+    "unicorn/switch-case-braces": "error",
+    "unicorn/switch-case-break-position": "error",
+    // Encoding names are data here, matched exactly as IANA and WHATWG register them.
+    "unicorn/text-encoding-identifier-case": "off",
+    "unicorn/throw-new-error": "error",
+    // sonarjs recommended, less the aws-* AWS CDK rules (no CDK here) and the rules that need type
+    // information, which a JS plugin does not get.
+    "sonarjs/anchor-precedence": "error",
+    "sonarjs/arguments-order": "error",
+    "sonarjs/assertions-in-test-cases": "error",
+    "sonarjs/async-test-assertions": "error",
+    "sonarjs/avoid-mutating-nested-properties-of-shallow-clones": "error",
+    "sonarjs/chai-determinate-assertion": "error",
+    "sonarjs/class-name": "error",
+    "sonarjs/cognitive-complexity": "error",
+    "sonarjs/comma-or-logical-or-case": "error",
+    "sonarjs/concise-regex": "error",
+    "sonarjs/content-length": "error",
+    "sonarjs/content-security-policy": "error",
+    "sonarjs/cookie-no-httponly": "error",
+    "sonarjs/cors": "error",
+    "sonarjs/csrf": "error",
+    "sonarjs/disabled-auto-escaping": "error",
+    "sonarjs/disabled-timeout": "error",
+    "sonarjs/dompurify-unsafe-config": "error",
+    "sonarjs/duplicates-in-character-class": "error",
+    "sonarjs/dynamically-constructed-templates": "error",
+    "sonarjs/empty-string-repetition": "error",
+    "sonarjs/encryption-secure-mode": "error",
+    "sonarjs/explicit-test-skip": "error",
+    "sonarjs/file-permissions": "error",
+    "sonarjs/file-uploads": "error",
+    "sonarjs/function-inside-loop": "error",
+    "sonarjs/future-reserved-words": "error",
+    "sonarjs/hardcoded-secret-signatures": "error",
+    "sonarjs/hooks-before-test-cases": "error",
+    "sonarjs/inconsistent-function-call": "error",
+    "sonarjs/insecure-cookie": "error",
+    "sonarjs/insecure-jwt-token": "error",
+    "sonarjs/inverted-assertion-arguments": "error",
+    "sonarjs/label-position": "error",
+    "sonarjs/link-with-target-blank": "error",
+    "sonarjs/max-switch-cases": "error",
+    "sonarjs/memoize-cache-key": "error",
+    "sonarjs/misplaced-loop-counter": "error",
+    "sonarjs/no-all-duplicated-branches": "error",
+    "sonarjs/no-angular-bypass-sanitization": "error",
+    "sonarjs/no-case-label-in-switch": "error",
+    "sonarjs/no-code-after-done": "error",
+    "sonarjs/no-collection-size-mischeck": "error",
+    "sonarjs/no-dead-store": "error",
+    "sonarjs/no-debounce-throttle-in-render": "error",
+    "sonarjs/no-debug-commands-in-ui-tests": "error",
+    "sonarjs/no-default-utility-imports": "error",
+    "sonarjs/no-duplicate-in-composite": "error",
+    "sonarjs/no-duplicate-parameterized-test-case": "error",
+    "sonarjs/no-duplicated-branches": "error",
+    "sonarjs/no-element-overwrite": "error",
+    "sonarjs/no-empty-after-reluctant": "error",
+    "sonarjs/no-empty-alternatives": "error",
+    "sonarjs/no-empty-collection": "error",
+    "sonarjs/no-empty-group": "error",
+    "sonarjs/no-empty-parameterized-test-dataset": "error",
+    "sonarjs/no-empty-test-file": "error",
+    "sonarjs/no-empty-test-title": "error",
+    "sonarjs/no-equals-in-for-termination": "error",
+    "sonarjs/no-exclusive-tests": "error",
+    "sonarjs/no-extra-arguments": "error",
+    "sonarjs/no-fixed-wait-in-tests": "error",
+    "sonarjs/no-floating-point-equality": "error",
+    "sonarjs/no-forced-browser-interaction": "error",
+    "sonarjs/no-global-this": "error",
+    "sonarjs/no-globals-shadowing": "error",
+    "sonarjs/no-gratuitous-expressions": "error",
+    "sonarjs/no-hardcoded-ip": "error",
+    "sonarjs/no-hardcoded-passwords": "error",
+    "sonarjs/no-hardcoded-secrets": "error",
+    "sonarjs/no-identical-expressions": "error",
+    "sonarjs/no-identical-functions": "error",
+    "sonarjs/no-ignored-exceptions": "error",
+    "sonarjs/no-incomplete-assertions": "error",
+    "sonarjs/no-internal-api-use": "error",
+    "sonarjs/no-invariant-returns": "error",
+    "sonarjs/no-inverted-boolean-check": "error",
+    "sonarjs/no-labels": "error",
+    "sonarjs/no-literal-call": "error",
+    "sonarjs/no-mime-sniff": "error",
+    "sonarjs/no-mutate-reactive-state-in-updated-hook": "error",
+    "sonarjs/no-nested-assignment": "error",
+    "sonarjs/no-nested-conditional": "error",
+    "sonarjs/no-nested-functions": "error",
+    "sonarjs/no-nested-template-literals": "error",
+    "sonarjs/no-os-command-from-path": "error",
+    "sonarjs/no-parameter-reassignment": "error",
+    "sonarjs/no-redundant-assignments": "error",
+    "sonarjs/no-redundant-boolean": "error",
+    "sonarjs/no-redundant-jump": "error",
+    "sonarjs/no-redundant-optional": "error",
+    "sonarjs/no-referrer-policy": "error",
+    "sonarjs/no-same-argument-assert": "error",
+    "sonarjs/no-same-line-conditional": "error",
+    "sonarjs/no-session-cookies-on-static-assets": "error",
+    "sonarjs/no-skipped-tests": "error",
+    "sonarjs/no-small-switch": "error",
+    "sonarjs/no-table-as-layout": "error",
+    "sonarjs/no-trivial-assertions": "error",
+    "sonarjs/no-unenclosed-multiline-block": "error",
+    "sonarjs/no-uniq-key": "error",
+    "sonarjs/no-unused-collection": "error",
+    "sonarjs/no-use-of-empty-return-value": "error",
+    "sonarjs/no-useless-increment": "error",
+    "sonarjs/no-useless-react-setstate": "error",
+    "sonarjs/no-vue-class-component": "error",
+    "sonarjs/no-vue-mixins": "error",
+    "sonarjs/no-weak-cipher": "error",
+    "sonarjs/no-weak-keys": "error",
+    "sonarjs/non-existent-operator": "error",
+    "sonarjs/parameterized-tests": "error",
+    "sonarjs/prefer-cypress-should": "error",
+    "sonarjs/prefer-native-axios-alternative": "error",
+    "sonarjs/prefer-native-jquery-alternative": "error",
+    "sonarjs/prefer-native-lodash-alternative": "error",
+    "sonarjs/prefer-promise-shorthand": "error",
+    "sonarjs/prefer-single-boolean-return": "error",
+    "sonarjs/prefer-specific-assertions": "error",
+    "sonarjs/prefer-type-guard": "error",
+    "sonarjs/prefer-while": "error",
+    "sonarjs/production-debug": "error",
+    "sonarjs/public-static-readonly": "error",
+    "sonarjs/reduce-initial-value": "error",
+    "sonarjs/regex-complexity": "error",
+    "sonarjs/review-blockchain-mnemonic": "error",
+    "sonarjs/session-regeneration": "error",
+    "sonarjs/single-char-in-character-classes": "error",
+    "sonarjs/single-character-alternation": "error",
+    "sonarjs/slow-regex": "error",
+    "sonarjs/stable-tests": "error",
+    "sonarjs/stateful-regex": "error",
+    "sonarjs/strict-transport-security": "error",
+    "sonarjs/super-linear-regex": "error",
+    "sonarjs/synchronous-suite-callback": "error",
+    "sonarjs/table-header": "error",
+    "sonarjs/table-header-reference": "error",
+    "sonarjs/test-check-exception": "error",
+    "sonarjs/testing-library-prefer-query-by-disappearance": "error",
+    "sonarjs/testing-library-query-assertion": "error",
+    "sonarjs/unverified-certificate": "error",
+    "sonarjs/unverified-hostname": "error",
+    "sonarjs/updated-loop-counter": "error",
+    "sonarjs/use-type-alias": "error",
+    "sonarjs/weak-ssl": "error",
+    "sonarjs/x-powered-by": "error",
+    "sonarjs/xml-parser-xxe": "error",
+    // Security hotspots ask for a review, not a fix.
+    "sonarjs/no-clear-text-protocols": "off",
+    "sonarjs/publicly-writable-directories": "off",
+    "sonarjs/hashing": "off",
+    "sonarjs/pseudo-random": "off",
+    "sonarjs/sql-queries": "off",
+    "sonarjs/code-eval": "off",
+    // TODOs are tracked deliberately rather than left for a linter to chase.
+    "sonarjs/todo-tag": "off",
+    // A one-word alias for a primitive or a shared shape is what makes these APIs readable.
+    "sonarjs/redundant-type-aliases": "off",
+    // Guards against values the types say cannot happen but the runtime supplies.
+    "sonarjs/different-types-comparison": "off",
+    // A union return is a design here, declared in the signature.
+    "sonarjs/function-return-type": "off",
+    // `void` marks a deliberately un-awaited promise, which no-floating-promises asks for.
+    "sonarjs/void-use": "off",
+    // Covered by the native rules named beside each.
+    "sonarjs/block-scoped-var": "off", // block-scoped-var
+    "sonarjs/call-argument-line": "off", // no-unexpected-multiline
+    "sonarjs/constructor-for-side-effects": "off", // no-new
+    "sonarjs/fixme-tag": "off", // no-warning-comments
+    "sonarjs/for-loop-increment-sign": "off", // for-direction
+    "sonarjs/generator-without-yield": "off", // require-yield
+    "sonarjs/no-control-regex": "off", // no-control-regex
+    "sonarjs/no-delete-var": "off", // no-delete-var
+    "sonarjs/no-duplicate-test-title": "off", // vitest/no-identical-title
+    "sonarjs/no-empty-character-class": "off", // no-empty-character-class
+    "sonarjs/no-fallthrough": "off", // no-fallthrough
+    "sonarjs/no-hook-setter-in-body": "off", // react/set-state-in-render
+    "sonarjs/no-identical-conditions": "off", // no-dupe-else-if and no-duplicate-case
+    "sonarjs/no-implicit-global": "off", // no-undef in JavaScript, the compiler in TypeScript
+    "sonarjs/no-interpolation-in-inline-snapshots": "off", // vitest/no-interpolation-in-snapshots
+    "sonarjs/no-invalid-regexp": "off", // no-invalid-regexp
+    "sonarjs/no-misleading-character-class": "off", // no-misleading-character-class
+    "sonarjs/no-primitive-wrappers": "off", // unicorn/new-for-builtins and typescript/no-wrapper-object-types
+    "sonarjs/no-regex-spaces": "off", // no-regex-spaces
+    "sonarjs/no-unthrown-error": "off", // no-new, except in tests
+    "sonarjs/no-unused-vars": "off", // no-unused-vars
+    "sonarjs/no-useless-catch": "off", // no-useless-catch
+    "sonarjs/object-alt-content": "off", // jsx-a11y/alt-text
+    "sonarjs/prefer-default-last": "off", // default-case-last
+    "sonarjs/unused-import": "off", // no-unused-vars, except in tests
+    "sonarjs/updated-const-var": "off", // no-const-assign in JavaScript, the compiler in TypeScript
+    "sonarjs/vitest-mock-at-module-scope": "off" // vitest/hoisted-apis-on-top
+  },
+  "overrides": [
+    // The library runs on every runtime, so its source cannot use the Node standard library.
+    // Bare builtin names are a closed list: modules added since Node 18 are node:-only.
+    {
+      "files": [
+        "packages/xml/src/**",
+        "packages/sax/src/**",
+        "packages/writer/src/**",
+        "packages/dom/src/**",
+        "packages/canonical/src/**",
+        "packages/validation/src/**",
+        "packages/xinclude/src/**",
+        "packages/catalog/src/**",
+        "packages/encodings-cjk/src/**"
+      ],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "regex": "^(?:node:.+|assert|assert/strict|async_hooks|buffer|child_process|cluster|console|constants|crypto|dgram|diagnostics_channel|dns|dns/promises|domain|events|fs|fs/promises|http|http2|https|inspector|inspector/promises|module|net|os|path|path/posix|path/win32|perf_hooks|process|punycode|querystring|readline|readline/promises|repl|stream|stream/consumers|stream/promises|stream/web|string_decoder|sys|timers|timers/promises|tls|trace_events|tty|url|util|util/types|v8|vm|wasi|worker_threads|zlib)$",
+                "message": "exemplar runs on Node, Deno, Bun and browsers, so its source uses web-standard APIs only. Runtime-specific code goes behind a dedicated subpath export."
+              }
+            ]
+          }
+        ],
+        "no-restricted-globals": [
+          "error",
+          {
+            "name": "Buffer",
+            "message": "Buffer does not exist outside Node and Bun. Use Uint8Array. exemplar runs on Node, Deno, Bun and browsers, so its source uses web-standard APIs only. Runtime-specific code goes behind a dedicated subpath export."
+          },
+          {
+            "name": "__dirname",
+            "message": "exemplar runs on Node, Deno, Bun and browsers, so its source uses web-standard APIs only. Runtime-specific code goes behind a dedicated subpath export."
+          },
+          {
+            "name": "__filename",
+            "message": "exemplar runs on Node, Deno, Bun and browsers, so its source uses web-standard APIs only. Runtime-specific code goes behind a dedicated subpath export."
+          },
+          {
+            "name": "process",
+            "message": "exemplar runs on Node, Deno, Bun and browsers, so its source uses web-standard APIs only. Runtime-specific code goes behind a dedicated subpath export."
+          },
+          {
+            "name": "global",
+            "message": "Use globalThis. exemplar runs on Node, Deno, Bun and browsers, so its source uses web-standard APIs only."
+          },
+          {
+            "name": "setImmediate",
+            "message": "exemplar runs on Node, Deno, Bun and browsers, so its source uses web-standard APIs only. Use queueMicrotask or setTimeout."
+          }
+        ]
+      }
+    },
+    // The one runtime-specific subpath: @exemplarjs/xml/resolvers/file reads files with the Node API, which Deno and Bun share.
+    {
+      "files": ["packages/xml/src/resolvers/file.ts"],
+      "rules": { "no-restricted-imports": "off" }
+    },
+    // Runtime environment variables are not turbo inputs.
+    {
+      "files": ["**/src/**", "**/test/**"],
+      "jsPlugins": ["eslint-plugin-turbo"],
+      "rules": {
+        "turbo/no-undeclared-env-vars": "off"
+      }
+    },
+    // Tests: vitest's rules, and relaxed rules for spies passed detached, deliberate assertions and fixtures
+    // beside their cases.
+    {
+      "files": ["**/*.test.{js,ts}", "**/*.spec.{js,ts}", "**/test/**", "**/__tests__/**"],
+      "plugins": ["vitest"],
+      "jsPlugins": ["eslint-plugin-sonarjs"],
+      "rules": {
+        "vitest/expect-expect": ["error", { "assertFunctionNames": ["expect", "expect*"] }],
+        "vitest/hoisted-apis-on-top": "error",
+        "vitest/no-identical-title": "error",
+        "vitest/no-interpolation-in-snapshots": "error",
+        // Tests branch per table case, or narrow a type that an earlier expect has checked.
+        "vitest/no-conditional-expect": "off",
+        // sonarjs/assertions-in-test-cases checks this.
+        "vitest/no-standalone-expect": "off",
+        // vi.fn() takes its type from its implementation, or from where it is passed.
+        "vitest/require-mock-type-parameters": "off",
+        // expect(value, message) names the case that failed.
+        "vitest/valid-expect": ["error", { "maxArgs": 2 }],
+        // It cannot see that a title computed per case is a string.
+        "vitest/valid-title": "off",
+        "no-console": "off",
+        "no-new": "off",
+        "no-unused-vars": "off",
+        "typescript/no-explicit-any": "off",
+        "typescript/no-unnecessary-type-assertion": "off",
+        "typescript/unbound-method": "off",
+        "unicorn/consistent-function-scoping": "off",
+        "unicorn/no-useless-undefined": "off",
+        // The DOM tests call removeChild to test it.
+        "unicorn/prefer-dom-node-remove": "off",
+        "sonarjs/concise-regex": "off",
+        "sonarjs/no-floating-point-equality": "off",
+        "sonarjs/no-identical-functions": "off",
+        "sonarjs/no-nested-assignment": "off",
+        "sonarjs/no-small-switch": "off",
+        "sonarjs/parameterized-tests": "off",
+        "sonarjs/prefer-specific-assertions": "off",
+        "sonarjs/public-static-readonly": "off",
+        "sonarjs/super-linear-regex": "off",
+        // Still checked here, where no-new and no-unused-vars are off.
+        "sonarjs/no-unthrown-error": "error",
+        "sonarjs/unused-import": "error"
+      }
+    },
+    // Nothing type-checks JavaScript, so these catch undefined and redeclared names. TypeScript allows a value and
+    // a type to share a name.
+    {
+      "files": ["**/*.{js,mjs,cjs}"],
+      "env": { "node": true },
+      "rules": {
+        "no-redeclare": "error",
+        "no-undef": "error"
+      }
+    },
+    // Tool configs report to the terminal running them.
+    {
+      "files": ["**/*.config.{ts,mts,js,mjs,cjs}"],
+      "rules": {
+        "no-console": "off"
+      }
+    }
+  ]
+}

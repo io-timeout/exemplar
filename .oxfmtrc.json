@@ -1,0 +1,22 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "trailingComma": "es5",
+  "singleQuote": true,
+  "printWidth": 120,
+  "objectWrap": "preserve",
+  "sortPackageJson": false,
+  "sortImports": {
+    "newlinesBetween": false,
+    "customGroups": [{ "groupName": "exemplar", "elementNamePattern": ["@exemplarjs/**"] }],
+    "groups": ["builtin", "external", "exemplar", ["parent", "sibling", "index"]]
+  },
+  "ignorePatterns": [
+    // pnpm rewrites these itself.
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml",
+    // Whitespace-sensitive test fixtures: reformatting them changes what is under test.
+    "**/fixtures/",
+    // API docs that TypeDoc generates.
+    "api/"
+  ]
+}

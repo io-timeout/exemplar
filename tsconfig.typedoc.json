@@ -1,0 +1,18 @@
+{
+  "extends": "./configs/build-config/tsconfigs/tsconfig.lib.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "customConditions": ["exemplar-source"]
+  },
+  "include": [
+    "packages/xml/src",
+    "packages/sax/src",
+    "packages/writer/src",
+    "packages/dom/src",
+    "packages/canonical/src",
+    "packages/validation/src",
+    "packages/xinclude/src",
+    "packages/catalog/src",
+    "packages/encodings-cjk/src"
+  ]
+}

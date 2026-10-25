@@ -1,0 +1,2 @@
+<!ENTITY greeting "hello from a file">
+<!ENTITY ext SYSTEM "http://example.com/ent.xml">

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "name": "exemplar",
+  "entryPoints": [
+    "packages/xml/src/index.ts",
+    "packages/xml/src/filters/index.ts",
+    "packages/xml/src/resolvers/index.ts",
+    "packages/xml/src/resolvers/file.ts",
+    "packages/sax/src/index.ts",
+    "packages/dom/src/index.ts",
+    "packages/writer/src/index.ts",
+    "packages/canonical/src/index.ts",
+    "packages/validation/src/index.ts",
+    "packages/encodings-cjk/src/index.ts",
+    "packages/xinclude/src/index.ts",
+    "packages/catalog/src/index.ts"
+  ],
+  "tsconfig": "tsconfig.typedoc.json",
+  "out": "api",
+  "plugin": ["typedoc-plugin-markdown"],
+  "readme": "none",
+  "excludeInternal": true,
+  "excludePrivate": true,
+  "disableSources": true
+}

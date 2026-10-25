@@ -1,0 +1,45 @@
+{
+  "name": "exemplar-workspace",
+  "private": true,
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/io-timeout/exemplar.git"
+  },
+  "type": "module",
+  "scripts": {
+    "clean:output": "pnpm -r run clean:output && rimraf .turbo coverage api",
+    "typecheck": "turbo run typecheck",
+    "compile": "turbo run compile",
+    "test": "turbo run test",
+    "test:coverage": "turbo run compile && vitest run --coverage",
+    "test:browser": "turbo run compile && vitest run --config vitest.browser.config.js",
+    "lint": "turbo run lint lint:root",
+    "lint:ci": "turbo run lint lint:root --continue",
+    "lint:root": "oxlint .github vitest.config.js vitest.browser.config.js",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "docs:api": "pnpm dlx --package typedoc@0.28.20 --package typedoc-plugin-markdown@4.14.1 --package typescript@6.0.3 typedoc",
+    "set-version": "pnpm -r version --no-git-checks",
+    "reset": "pnpm clean:output && pnpm clean -r"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@vitest/browser-playwright": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "eslint-plugin-sonarjs": "catalog:",
+    "eslint-plugin-turbo": "catalog:",
+    "lefthook": "catalog:",
+    "oxfmt": "catalog:",
+    "oxlint": "catalog:",
+    "oxlint-tsgolint": "catalog:",
+    "playwright": "catalog:",
+    "rimraf": "catalog:",
+    "tsdown": "catalog:",
+    "turbo": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  },
+  "packageManager": "pnpm@12.9.1"
+}

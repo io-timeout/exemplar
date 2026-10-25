@@ -1,0 +1,42 @@
+{
+  "name": "@exemplarjs/dom",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A DOM Level 3 Core tree built by @exemplarjs/xml, with browser-style DOMParser and XMLSerializer",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/io-timeout/exemplar.git",
+    "directory": "packages/dom"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "exemplar-source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "NOTICE",
+    "THIRD_PARTY_LICENSES"
+  ],
+  "scripts": {
+    "clean:output": "rimraf dist .turbo coverage",
+    "typecheck": "tsc --noEmit",
+    "compile": "tsdown",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "lint": "oxlint"
+  },
+  "peerDependencies": {
+    "@exemplarjs/writer": "workspace:*",
+    "@exemplarjs/xml": "workspace:*"
+  },
+  "devDependencies": {
+    "@exemplarjs/build-config": "workspace:*",
+    "@exemplarjs/writer": "workspace:*",
+    "@exemplarjs/xml": "workspace:*"
+  }
+}

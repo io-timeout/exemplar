@@ -1,0 +1,6 @@
+{
+  "extends": "@exemplarjs/build-config/tsconfig.lib.json",
+  "compilerOptions": {
+    "types": ["node"]
+  }
+}

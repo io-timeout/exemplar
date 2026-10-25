@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24.13.1
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm format:check
+      - run: pnpm lint:ci
+      - run: pnpm typecheck
+      - run: pnpm test:coverage
+
+  # The W3C suites and consistency checks, from exemplar-tests, on this change's build.
+  conformance:
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: exemplar
+      - uses: actions/checkout@v7
+        with:
+          repository: ${{ github.repository_owner }}/exemplar-tests
+          path: exemplar-tests
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: exemplar/package.json
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24.13.1
+          cache: pnpm
+          cache-dependency-path: '*/pnpm-lock.yaml'
+      - name: Install xmllint
+        run: sudo apt-get install --yes libxml2-utils
+      # The XML suite is downloaded on first use, as its licence requires; the cache keeps it between runs.
+      - uses: actions/cache@v6
+        with:
+          path: exemplar-tests/data/conformance/xmlts
+          key: w3c-xmlts-${{ hashFiles('exemplar-tests/tools/conformance/suites.json') }}
+      - name: Build exemplar
+        working-directory: exemplar
+        run: pnpm install --frozen-lockfile && pnpm compile
+      - name: Run the suites
+        working-directory: exemplar-tests
+        run: pnpm install --frozen-lockfile && pnpm conformance
+
+  browsers:
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24.13.1
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium firefox webkit
+      - run: pnpm compile
+      - name: Unit tests in Chromium, Firefox and WebKit
+        run: pnpm test:browser

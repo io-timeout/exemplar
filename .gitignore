@@ -1,0 +1,18 @@
+node_modules/
+dist/
+coverage/
+.turbo/
+idea/
+/api/
+.idea/
+.vitest/
+*.tsbuildinfo
+.DS_Store
+
+# The root LICENSE, NOTICE and THIRD_PARTY_LICENSES are copied into each package when CI builds it (build-config/src/tsdown.ts).
+LICENSE
+NOTICE
+THIRD_PARTY_LICENSES
+!/LICENSE
+!/NOTICE
+!/THIRD_PARTY_LICENSES

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "tasks": {
+    "typecheck": {
+      // Needs upstream declarations, which `compile` emits.
+      "dependsOn": ["^compile"],
+      "inputs": ["$TURBO_DEFAULT$", "!README.md"],
+      "outputLogs": "new-only"
+    },
+    "compile": {
+      // Gated on this package's own typecheck, so type errors fail before anything is emitted.
+      "dependsOn": ["^compile", "typecheck"],
+      "inputs": ["$TURBO_DEFAULT$", "!README.md"],
+      "outputs": ["dist/**"]
+    },
+    "test": {
+      "dependsOn": ["^compile"],
+      "env": ["EXEMPLAR_FUZZ_SCALE", "EXEMPLAR_FUZZ_SEED", "EXEMPLAR_FUZZ_PATH"]
+    },
+    "test:coverage": {
+      "dependsOn": ["^compile"],
+      "outputs": ["coverage/**"],
+      "env": ["EXEMPLAR_FUZZ_SCALE", "EXEMPLAR_FUZZ_SEED", "EXEMPLAR_FUZZ_PATH"]
+    },
+    "lint": {
+      // Type-aware rules read upstream declarations, which `compile` emits.
+      "dependsOn": ["^compile"],
+      "inputs": ["$TURBO_DEFAULT$", "!README.md", "$TURBO_ROOT$/.oxlintrc.json"],
+      "outputLogs": "new-only"
+    },
+    // Root files that belong to no package.
+    "//#lint:root": {
+      "inputs": [".github/**", "vitest.config.js", "vitest.browser.config.js", ".oxlintrc.json"],
+      "outputLogs": "new-only"
+    }
+  }
+}

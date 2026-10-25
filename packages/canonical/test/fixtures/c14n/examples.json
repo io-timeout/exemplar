@@ -1,0 +1,44 @@
+{
+  "source": "https://www.w3.org/TR/2001/REC-xml-c14n-20010315, section 3; the document-subset example 3.7 is left out",
+  "examples": [
+    {
+      "name": "3.1 PIs, Comments, and Outside of Document Element",
+      "input": "<?xml version=\"1.0\"?>\n\n<?xml-stylesheet   href=\"doc.xsl\"\n   type=\"text/xsl\"   ?>\n\n<!DOCTYPE doc SYSTEM \"doc.dtd\">\n\n<doc>Hello, world!<!-- Comment 1 --></doc>\n\n<?pi-without-data     ?>\n\n<!-- Comment 2 -->\n\n<!-- Comment 3 -->\n",
+      "uncommented": "<?xml-stylesheet href=\"doc.xsl\"\n   type=\"text/xsl\"   ?>\n<doc>Hello, world!</doc>\n<?pi-without-data?>",
+      "commented": "<?xml-stylesheet href=\"doc.xsl\"\n   type=\"text/xsl\"   ?>\n<doc>Hello, world!<!-- Comment 1 --></doc>\n<?pi-without-data?>\n<!-- Comment 2 -->\n<!-- Comment 3 -->",
+      "files": {
+        "doc.dtd": ""
+      }
+    },
+    {
+      "name": "3.2 Whitespace in Document Content",
+      "input": "<doc>\n   <clean>   </clean>\n   <dirty>   A   B   </dirty>\n   <mixed>\n      A\n      <clean>   </clean>\n      B\n      <dirty>   A   B   </dirty>\n      C\n   </mixed>\n</doc>\n",
+      "uncommented": "<doc>\n   <clean>   </clean>\n   <dirty>   A   B   </dirty>\n   <mixed>\n      A\n      <clean>   </clean>\n      B\n      <dirty>   A   B   </dirty>\n      C\n   </mixed>\n</doc>"
+    },
+    {
+      "name": "3.3 Start and End Tags",
+      "input": "<!DOCTYPE doc [<!ATTLIST e9 attr CDATA \"default\">]>\n<doc>\n   <e1   />\n   <e2   ></e2>\n   <e3    name = \"elem3\"   id=\"elem3\"    />\n   <e4    name=\"elem4\"   id=\"elem4\"    ></e4>\n   <e5 a:attr=\"out\" b:attr=\"sorted\" attr2=\"all\" attr=\"I'm\"\n       xmlns:b=\"http://www.ietf.org\" \n       xmlns:a=\"http://www.w3.org\"\n       xmlns=\"http://example.org\"/>\n   <e6 xmlns=\"\" xmlns:a=\"http://www.w3.org\">\n       <e7 xmlns=\"http://www.ietf.org\">\n           <e8 xmlns=\"\" xmlns:a=\"http://www.w3.org\">\n               <e9 xmlns=\"\" xmlns:a=\"http://www.ietf.org\"/>\n           </e8>\n       </e7>\n   </e6>\n</doc>\n",
+      "uncommented": "<doc>\n   <e1></e1>\n   <e2></e2>\n   <e3 id=\"elem3\" name=\"elem3\"></e3>\n   <e4 id=\"elem4\" name=\"elem4\"></e4>\n   <e5 xmlns=\"http://example.org\" xmlns:a=\"http://www.w3.org\" xmlns:b=\"http://www.ietf.org\" attr=\"I'm\" attr2=\"all\" b:attr=\"sorted\" a:attr=\"out\"></e5>\n   <e6 xmlns:a=\"http://www.w3.org\">\n       <e7 xmlns=\"http://www.ietf.org\">\n           <e8 xmlns=\"\">\n               <e9 xmlns:a=\"http://www.ietf.org\" attr=\"default\"></e9>\n           </e8>\n       </e7>\n   </e6>\n</doc>",
+      "note": "The recommendation shows a space after </e5> that its input does not have."
+    },
+    {
+      "name": "3.4 Character Modifications and Character References",
+      "input": "<!DOCTYPE doc [\n<!ATTLIST normId id ID #IMPLIED>\n<!ATTLIST normNames attr NMTOKENS #IMPLIED>\n]>\n<doc>\n   <text>First line&#x0d;&#10;Second line</text>\n   <value>&#x32;</value>\n   <compute><![CDATA[value>\"0\" && value<\"10\" ?\"valid\":\"error\"]]></compute>\n   <compute expr='value>\"0\" &amp;&amp; value&lt;\"10\" ?\"valid\":\"error\"'>valid</compute>\n   <norm attr=' &apos;   &#x20;&#13;&#xa;&#9;   &apos; '/>\n   <normNames attr='   A   &#x20;&#13;&#xa;&#9;   B   '/>\n   <normId id=' &apos;   &#x20;&#13;&#xa;&#9;   &apos; '/>\n</doc>\n",
+      "uncommented": "<doc>\n   <text>First line&#xD;\nSecond line</text>\n   <value>2</value>\n   <compute>value&gt;\"0\" &amp;&amp; value&lt;\"10\" ?\"valid\":\"error\"</compute>\n   <compute expr=\"value>&quot;0&quot; &amp;&amp; value&lt;&quot;10&quot; ?&quot;valid&quot;:&quot;error&quot;\">valid</compute>\n   <norm attr=\" '    &#xD;&#xA;&#x9;   ' \"></norm>\n   <normNames attr=\"A &#xD;&#xA;&#x9; B\"></normNames>\n   <normId id=\"' &#xD;&#xA;&#x9; '\"></normId>\n</doc>"
+    },
+    {
+      "name": "3.5 Entity References",
+      "input": "<!DOCTYPE doc [\n<!ATTLIST doc attrExtEnt ENTITY #IMPLIED>\n<!ENTITY ent1 \"Hello\">\n<!ENTITY ent2 SYSTEM \"world.txt\">\n<!ENTITY entExt SYSTEM \"earth.gif\" NDATA gif>\n<!NOTATION gif SYSTEM \"viewgif.exe\">\n]>\n<doc attrExtEnt=\"entExt\">\n   &ent1;, &ent2;!\n</doc>\n\n<!-- Let world.txt contain \"world\" (excluding the quotes) -->\n",
+      "uncommented": "<doc attrExtEnt=\"entExt\">\n   Hello, world!\n</doc>",
+      "files": {
+        "world.txt": "world"
+      }
+    },
+    {
+      "name": "3.6 UTF-8 Encoding",
+      "input": "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n<doc>&#169;</doc>\n",
+      "uncommented": "<doc>©</doc>",
+      "note": "The recommendation writes the copyright sign as its UTF-8 bytes, #xC2#xA9."
+    }
+  ]
+}

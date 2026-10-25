@@ -1,0 +1,39 @@
+packages:
+  - configs/*
+  - packages/*
+
+# Every external dependency's version; packages refer to it with `catalog:`.
+catalog:
+  '@fast-check/vitest': 0.5.0
+  '@types/node': 24.19.2
+  '@vitest/browser-playwright': 5.0.5
+  '@vitest/coverage-v8': 5.0.5
+  eslint-plugin-sonarjs: 4.2.2
+  eslint-plugin-turbo: 2.11.10
+  fast-check: 4.10.2
+  lefthook: 2.2.1
+  oxfmt: 0.75.0
+  oxlint: 1.90.0
+  oxlint-tsgolint: 7.0.2005
+  playwright: 1.64.1
+  rimraf: 6.1.3
+  tsdown: 0.23.0
+  turbo: 2.11.10
+  typescript: 7.0.2
+  vite: 8.3.5
+  vitest: 5.0.5
+
+# New dependencies must go through the catalog, at exact versions.
+catalogMode: strict
+cleanupUnusedCatalogs: true
+saveExact: true
+strictDepBuilds: true
+
+# Supply-chain checks: no version younger than a week, none published with weaker provenance than an earlier one, and no transitive git or tarball dependencies.
+minimumReleaseAge: 10080
+trustPolicy: no-downgrade
+blockExoticSubdeps: true
+
+# Only these packages may run install scripts; any other fails the install.
+allowBuilds:
+  lefthook: true

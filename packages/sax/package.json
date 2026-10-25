@@ -1,0 +1,40 @@
+{
+  "name": "@exemplarjs/sax",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The push API for @exemplarjs/xml, following SAX",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/io-timeout/exemplar.git",
+    "directory": "packages/sax"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "exemplar-source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "NOTICE",
+    "THIRD_PARTY_LICENSES"
+  ],
+  "scripts": {
+    "clean:output": "rimraf dist .turbo coverage",
+    "typecheck": "tsc --noEmit",
+    "compile": "tsdown",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "lint": "oxlint"
+  },
+  "peerDependencies": {
+    "@exemplarjs/xml": "workspace:*"
+  },
+  "devDependencies": {
+    "@exemplarjs/build-config": "workspace:*",
+    "@exemplarjs/xml": "workspace:*"
+  }
+}

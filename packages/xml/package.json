@@ -1,0 +1,58 @@
+{
+  "name": "@exemplarjs/xml",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A fast, W3C-conformant XML reader for TypeScript",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/io-timeout/exemplar.git",
+    "directory": "packages/xml"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "exemplar-source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./filters": {
+      "exemplar-source": "./src/filters/index.ts",
+      "types": "./dist/filters/index.d.ts",
+      "default": "./dist/filters/index.js"
+    },
+    "./resolvers": {
+      "exemplar-source": "./src/resolvers/index.ts",
+      "types": "./dist/resolvers/index.d.ts",
+      "default": "./dist/resolvers/index.js"
+    },
+    "./resolvers/file": {
+      "exemplar-source": "./src/resolvers/file.ts",
+      "types": "./dist/resolvers/file.d.ts",
+      "default": "./dist/resolvers/file.js"
+    },
+    "./internal": {
+      "exemplar-source": "./src/internal.ts",
+      "types": "./dist/internal.d.ts",
+      "default": "./dist/internal.js"
+    }
+  },
+  "files": [
+    "dist",
+    "NOTICE",
+    "THIRD_PARTY_LICENSES"
+  ],
+  "scripts": {
+    "clean:output": "rimraf dist .turbo coverage",
+    "typecheck": "tsc --noEmit",
+    "compile": "tsdown",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "lint": "oxlint"
+  },
+  "devDependencies": {
+    "@exemplarjs/build-config": "workspace:*",
+    "@fast-check/vitest": "catalog:",
+    "fast-check": "catalog:"
+  }
+}

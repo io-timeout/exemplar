@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    /* Language and environment */
+    "target": "esnext",
+    "lib": ["esnext"],
+    "types": [],
+
+    /* Modules */
+    "moduleDetection": "force",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+
+    /* Emit: tsdown builds, so tsc only checks */
+    "noEmit": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "${configDir}/dist",
+
+    /* Interop constraints */
+    "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
+    "isolatedModules": true,
+
+    /* Type checking */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* Completeness */
+    "skipLibCheck": true,
+
+    /* Projects */
+    "incremental": false
+  },
+  "include": ["${configDir}/src/**/*", "${configDir}/test/**/*"],
+  "exclude": ["${configDir}/node_modules", "${configDir}/dist", "${configDir}/coverage"]
+}

@@ -1,0 +1,24 @@
+name: Nightly
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+# The suites, differentials, fuzzers and benchmarks run nightly in exemplar-tests.
+jobs:
+  properties:
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24.13.1
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm compile
+      - name: Long property runs
+        env:
+          EXEMPLAR_FUZZ_SCALE: '300'
+        run: pnpm --filter @exemplarjs/xml exec vitest run test/integration/property.test.ts

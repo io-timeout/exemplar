@@ -1,0 +1,10 @@
+pre-commit:
+  # Format first, so lint sees what is committed.
+  piped: true
+  jobs:
+    - name: format
+      run: pnpm exec oxfmt --no-error-on-unmatched-pattern {staged_files}
+      stage_fixed: true
+    - name: lint
+      glob: '*.{js,mjs,cjs,ts,tsx}'
+      run: pnpm exec oxlint --no-error-on-unmatched-pattern {staged_files}

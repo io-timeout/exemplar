@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<book xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en">
+  <xi:include href="chapters/one.xml"/>
+  <xi:include href="chapters/two.xml" xpointer="summary"/>
+  <xi:include href="chapters/missing.xml"><xi:fallback><missing/></xi:fallback></xi:include>
+  <latin><xi:include href="notes-latin1.txt" parse="text" encoding="ISO-8859-1"/></latin>
+  <utf16><xi:include href="notes-utf16.txt" parse="text"/></utf16>
+</book>

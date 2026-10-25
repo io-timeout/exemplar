@@ -1,0 +1,41 @@
+{
+  "name": "@exemplarjs/build-config",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The tsconfigs, tsdown and Vitest settings every @exemplarjs package shares",
+  "license": "Apache-2.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "exemplar-source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./tsconfig.base.json": "./tsconfigs/tsconfig.base.json",
+    "./tsconfig.lib.json": "./tsconfigs/tsconfig.lib.json",
+    "./tsconfig.node.json": "./tsconfigs/tsconfig.node.json"
+  },
+  "files": [
+    "dist",
+    "src",
+    "tsconfigs"
+  ],
+  "scripts": {
+    "clean:output": "rimraf dist .turbo",
+    "typecheck": "tsc --noEmit",
+    "compile": "tsdown",
+    "lint": "oxlint"
+  },
+  "peerDependencies": {
+    "tsdown": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  }
+}
