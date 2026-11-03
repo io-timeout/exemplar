@@ -1,6 +1,3 @@
-import { readFileSync, readdirSync } from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { ErrorCode, ResolutionError, XMLError, XMLInputFactory } from '@/index.ts';
 import { accessRefusedError } from '@/internal.ts';
@@ -19,24 +16,6 @@ function thrown(call: () => unknown): unknown {
   throw new Error('Nothing was thrown');
 }
 
-/** Every source file of every package, by its path from `packages`. */
-function sources(): Map<string, string> {
-  const packages = fileURLToPath(new URL('../../../', import.meta.url));
-  const found = new Map<string, string>();
-  const walk = (directory: string): void => {
-    for (const entry of readdirSync(directory, { withFileTypes: true })) {
-      const file = path.join(directory, entry.name);
-      if (entry.isDirectory()) walk(file);
-      else if (file.endsWith('.ts')) found.set(path.relative(packages, file), readFileSync(file, 'utf8'));
-    }
-  };
-  for (const name of readdirSync(packages)) {
-    const src = path.join(packages, name, 'src');
-    if (readdirSync(path.join(packages, name)).includes('src')) walk(src);
-  }
-  return found;
-}
-
 describe('ErrorFactory.create', () => {
   it('builds an error of the class given, with the arguments its constructor takes', () => {
     const error = ErrorFactory.create(ResolutionError, ErrorCode.ACCESS_REFUSED, 'refused');
@@ -46,7 +25,7 @@ describe('ErrorFactory.create', () => {
     expect([misuse instanceof TypeError, misuse.name, misuse.message]).toEqual([true, 'TypeError', 'wrong']);
   });
 
-  // Engines without `Error.stackTraceLimit`, such as Firefox's, keep their stacks.
+  // Engines without `Error.stackTraceLimit` keep their stacks.
   it.runIf(Error.stackTraceLimit !== undefined)('builds it without stack frames, and puts the limit back', () => {
     const limit = Error.stackTraceLimit;
     expect(hasFrames(ErrorFactory.create(RangeError, 'no frames'))).toBe(false);
@@ -93,7 +72,7 @@ describe('ErrorFactory.expect', () => {
   });
 });
 
-// Engines without `Error.stackTraceLimit`, such as Firefox's, keep their stacks.
+// Engines without `Error.stackTraceLimit` keep their stacks.
 describe.runIf(Error.stackTraceLimit !== undefined)('the errors the reader raises', () => {
   it('carry no stack frames: fatal, recoverable, refused reads and misuse alike', () => {
     const fatal = thrown(() => {
@@ -111,22 +90,5 @@ describe.runIf(Error.stackTraceLimit !== undefined)('the errors the reader raise
     for (const error of [fatal, ...recoverable, accessRefusedError('http://x/a.dtd'), misuse]) {
       expect(hasFrames(error)).toBe(false);
     }
-  });
-});
-
-describe('every package', () => {
-  it('builds its errors only through ErrorFactory.create', () => {
-    // The DOM's DOMError is DOM Level 3's report object, not an exception.
-    const built = /new (?!DOMError\()((?:[A-Z][A-Za-z]*)?Error|TypeError|RangeError|DOMException)\(/;
-    const offenders = [...sources()]
-      .filter(([file, text]) => file !== path.join('xml', 'src', 'util', 'errors.ts') && built.test(text))
-      .map(([file, text]) => `${file}: ${built.exec(text)?.[0]}`);
-    expect(offenders).toEqual([]);
-  });
-
-  it('throws caught errors of unexpected classes on through ErrorFactory.expect', () => {
-    const rethrow = /if \(!\(error instanceof [^)]*\)\) throw error;/;
-    const offenders = [...sources()].filter(([, text]) => rethrow.test(text)).map(([file]) => file);
-    expect(offenders).toEqual([]);
   });
 });

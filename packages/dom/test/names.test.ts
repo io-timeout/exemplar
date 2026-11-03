@@ -2,6 +2,18 @@ import { domException } from '@test/helpers/dom.ts';
 import { describe, expect, it } from 'vitest';
 import { DTD_TYPES, checkName, checkPrefix, checkQName, checkQualifiedName, fail, orNull } from '@/names.ts';
 
+/** Whether the engine builds a DOMException without stack frames while the limit is 0; Firefox keeps them. */
+const STACKLESS_DOM_EXCEPTIONS = ((): boolean => {
+  const limit = Error.stackTraceLimit;
+  if (limit === undefined) return false;
+  Error.stackTraceLimit = 0;
+  try {
+    return !/\n\s+at |@/.test(new DOMException('probe').stack ?? '');
+  } finally {
+    Error.stackTraceLimit = limit;
+  }
+})();
+
 const XML = 'http://www.w3.org/XML/1998/namespace';
 const XMLNS = 'http://www.w3.org/2000/xmlns/';
 
@@ -17,8 +29,7 @@ describe('fail', () => {
     expect(() => fail('NotFoundError', 'gone')).toThrow(DOMException);
   });
 
-  // Engines without `Error.stackTraceLimit`, such as Firefox's, keep their stacks.
-  it.runIf(Error.stackTraceLimit !== undefined)('throws it without stack frames', () => {
+  it.runIf(STACKLESS_DOM_EXCEPTIONS)('throws it without stack frames', () => {
     let thrown: unknown;
     try {
       fail('NotFoundError', 'gone');

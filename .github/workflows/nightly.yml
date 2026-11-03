@@ -5,6 +5,10 @@ on:
     - cron: '0 2 * * *'
   workflow_dispatch:
 
+# Every job only reads the repositories it checks out.
+permissions:
+  contents: read
+
 # The suites, differentials, fuzzers and benchmarks run nightly in exemplar-tests.
 jobs:
   properties:

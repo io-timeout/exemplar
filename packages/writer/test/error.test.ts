@@ -13,7 +13,7 @@ describe('WriterError', () => {
     expect(error.code).toBe('WRITE_NAME');
   });
 
-  // Engines without `Error.stackTraceLimit`, such as Firefox's, keep their stacks.
+  // Engines without `Error.stackTraceLimit` keep their stacks.
   it.runIf(Error.stackTraceLimit !== undefined)(
     'is thrown by the writer without stack frames, as its other errors are',
     () => {
