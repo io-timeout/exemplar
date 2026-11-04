@@ -29,23 +29,42 @@ jobs:
           name: coverage
           path: coverage/lcov.info
 
-  # SonarQube Cloud, in a job of its own so that only the scanner sees the token. Pull requests from forks have no token.
+  # SonarQube Cloud, in a job of its own so that only the scanner sees the token.
   sonar:
     needs: checks
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-26.04
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     steps:
+      # Pull requests from forks and from Dependabot get no secrets, so they skip the scan.
+      - if: env.SONAR_TOKEN == ''
+        run: echo "::warning::SONAR_TOKEN is not available, so SonarQube Cloud analysis is skipped."
       # The whole history, which SonarQube Cloud reads to tell new code from old.
-      - uses: actions/checkout@v7
+      - if: env.SONAR_TOKEN != ''
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - uses: actions/download-artifact@v8
+      - if: env.SONAR_TOKEN != ''
+        uses: actions/download-artifact@v8
         with:
           name: coverage
           path: coverage
-      - uses: SonarSource/sonarqube-scan-action@4d1dc0c91ee400dcf8a6dddf2f705ac36542e304 # v8.4.0
+      - if: env.SONAR_TOKEN != ''
+        name: Cache SonarQube packages
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - if: env.SONAR_TOKEN != ''
+        name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@4d1dc0c91ee400dcf8a6dddf2f705ac36542e304 # v8.4.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.organization=io-timeout
+            -Dsonar.projectKey=io-timeout_exemplar
 
   # The W3C suites and consistency checks, from exemplar-tests, on this change's build.
   conformance:
