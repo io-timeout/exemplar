@@ -1,0 +1,14 @@
+version: 2
+updates:
+  # The workflows' actions, pinned to commits. A release must be a week old, as in pnpm-workspace.yaml.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      actions:
+        patterns: ['*']
+    commit-message:
+      prefix: 'chore'

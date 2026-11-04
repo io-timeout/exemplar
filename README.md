@@ -1,3 +1,8 @@
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=io-timeout_exemplar&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=io-timeout_exemplar)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=io-timeout_exemplar&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=io-timeout_exemplar)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=io-timeout_exemplar&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=io-timeout_exemplar)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=io-timeout_exemplar&metric=coverage)](https://sonarcloud.io/summary/new_code?id=io-timeout_exemplar)
+
 # exemplar
 
 A fast, W3C-conformant XML library for TypeScript, with what Java's JAXP, StAX, SAX and DOM offer. [packages/xml](packages/xml/README.md) introduces the library itself.

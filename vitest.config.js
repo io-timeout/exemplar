@@ -6,7 +6,8 @@ export default defineConfig({
     projects: ['./packages/*'],
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'json', 'json-summary'],
+      // lcov for SonarQube Cloud.
+      reporter: ['text', 'json', 'json-summary', 'lcovonly'],
       reportOnFailure: true,
       include: ['packages/*/src/**/*.ts'],
       thresholds: { statements: 99, branches: 98, functions: 99, lines: 99 },

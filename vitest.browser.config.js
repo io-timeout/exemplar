@@ -13,6 +13,8 @@ export default defineConfig({
         root: `./packages/${name}`,
         // Tests named `.node.test.ts` need a file system.
         exclude: ['test/**/*.node.test.ts'],
+        // Shared CI runners run three browsers at once, and Firefox is the slowest, so allow twice the default.
+        testTimeout: 30_000,
         browser: {
           enabled: true,
           headless: true,

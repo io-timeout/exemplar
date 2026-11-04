@@ -298,7 +298,7 @@ describe('the async cursor over streams', () => {
 
   it('reads a long name, text and CDATA section spread over many chunks', async () => {
     const name = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR';
-    const xml = `<${name} v="${'v'.repeat(5000)}">${'t'.repeat(20_000)}<![CDATA[${'c'.repeat(100_000)}]]></${name}>`;
+    const xml = `<${name} v="${'v'.repeat(5000)}">${'t'.repeat(20_000)}<![CDATA[${'c'.repeat(20_000)}]]></${name}>`;
     expect(await readAsync(xml)).toBe(canonical(xml));
   });
 

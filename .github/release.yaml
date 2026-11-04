@@ -1,0 +1,24 @@
+changelog:
+  exclude:
+  categories:
+    - title: Breaking Changes
+      labels:
+        - breaking-change
+    - title: Features
+      labels:
+        - feature
+        - feat
+    - title: Bug fixes
+      labels:
+        - fix
+    - title: Documentation
+      labels:
+        - documentation
+        - docs
+    - title: Performance Improvements
+      labels:
+        - performance
+        - perf
+    - title: Other Changes
+      labels:
+        - '*'
